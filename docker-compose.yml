@@ -1,0 +1,24 @@
+# Local development database: PostgreSQL 16 with the pgvector extension.
+# Start:  docker compose up -d        Stop:  docker compose down
+# Your data survives restarts (it lives in the "pgdata" volume).
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    container_name: mpstme-one-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: mpstme
+      POSTGRES_PASSWORD: mpstme_dev
+      POSTGRES_DB: mpstme_one
+    ports:
+      - "5434:5432"          # 5434 on your laptop, so it won't clash with any other Postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mpstme -d mpstme_one"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  pgdata:

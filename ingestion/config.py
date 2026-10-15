@@ -5,7 +5,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 ROOT = Path(__file__).resolve().parents[1]          # C:\Users\Prit\mpstme-one
-load_dotenv(ROOT / ".env")
+load_dotenv(ROOT / ".env", override=True)   # .env wins over old Windows variables
 
 DATA = ROOT / "data"
 URLS_FILE = DATA / "sources" / "urls.txt"
@@ -20,6 +20,11 @@ CHUNKS = PROCESSED / "chunks.jsonl"
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
 OCR_MODEL = os.getenv("GEMINI_OCR_MODEL") or os.getenv("GEMINI_CHAT_MODEL", "gemini-3.5-flash")
+EMBED_MODEL = os.getenv("GEMINI_EMBED_MODEL", "gemini-embedding-2")
+EMBED_DIM = 768                                     # must match vector(768) in schema.sql
+
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://mpstme:mpstme_dev@localhost:5434/mpstme_one")
+EVAL_FILE = DATA / "eval" / "questions.csv"
 
 # Chunking (characters, roughly 4 chars = 1 token)
 CHUNK_SIZE = 1500

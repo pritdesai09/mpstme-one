@@ -12,6 +12,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from psycopg.types.json import Jsonb
 from pydantic import BaseModel, Field
 
@@ -20,8 +21,7 @@ from .db import get_conn
 from .gemini import GeminiUnavailable
 from .security import create_token, current_user, hash_password, verify_password
 from .settings import (ALLOWED_EMAIL_DOMAINS, CHAT_MODEL, CORS_ORIGINS,
-                       MAX_QUESTION_CHARS, RATE_LIMIT_PER_MINUTE)
-
+                       MAX_QUESTION_CHARS, RATE_LIMIT_PER_MINUTE, STATIC_DIR)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -200,3 +200,10 @@ def delete_session(session_id: str, user: dict = Depends(current_user)):
     if not deleted:
         raise HTTPException(404, "Chat not found.")
     return {"deleted": session_id}
+
+
+# ------------------------------------------------------------------ website
+# On Azure the React build lives in backend/static and is served from the same URL.
+# (Locally this folder doesn't exist, so nothing changes: use npm run dev as before.)
+if STATIC_DIR.exists():
+    app.mount("/", StaticFiles(directory=STATIC_DIR, html=True), name="website")

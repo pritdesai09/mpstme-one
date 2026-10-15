@@ -43,3 +43,5 @@ MAX_QUESTION_CHARS = 1000
 # Frontends allowed to call the API (Phase 6 React dev server runs on 5173)
 CORS_ORIGINS = [o.strip() for o in os.getenv("CORS_ORIGINS", "http://localhost:5173").split(",") if o.strip()]
 EVAL_DIR = PROJECT_DIR / "data" / "eval"
+# In the Docker image the built React app is copied here and served at "/"
+STATIC_DIR = BACKEND_DIR / "static"

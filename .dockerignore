@@ -1,0 +1,13 @@
+# keep the upload to Azure small: only frontend/ and backend/ are needed
+.git
+.env
+data
+ingestion
+**/.venv
+**/__pycache__
+**/node_modules
+frontend/dist
+frontend/.env
+backend/static
+backend/scripts
+*.md

@@ -1,0 +1,18 @@
+# secrets
+.env
+
+# python
+.venv/
+__pycache__/
+*.pyc
+
+# node
+node_modules/
+dist/
+
+# raw data (college PDFs / crawled pages stay local)
+data/raw/
+
+# misc
+.vscode/
+.DS_Store

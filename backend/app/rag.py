@@ -163,7 +163,7 @@ def cite_node(s: RagState) -> RagState:
             "url": c["url"],
             "section": c["section"],
             "similarity": round(float(c["similarity"]), 3),
-            "snippet": re.sub(r"\s+", " ", c["text"])[:280],
+            "snippet": re.sub(r"\s+", " ", re.sub(r"[#*`|]+|-{3,}", " ", c["text"])).strip()[:280],
         })
     return s
 
